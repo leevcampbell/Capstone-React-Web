@@ -231,18 +231,3 @@ class MatchedUsers(db.Model):
             'user_id': self.user_id,
             'project_id': self.project_id,
         }
-
-
-
-    
-
-
-
-    
-
-
-    
-
-
-
-    

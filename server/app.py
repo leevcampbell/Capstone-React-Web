@@ -16,6 +16,33 @@ migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 
 
+@app.route('/')
+def index():
+    return 'Hello World'
+
+def authorize_user():
+    user_id = session['user_id']
+    current_user = User.query.get(user_id)
+    try:
+        if current_user:
+            return current_user, 200
+    except:
+        return {'error': 'User must be logged in to continue'}, 401
+
+def authorize_owner():
+    owner_id = session['owner']
+    print(owner_id['id'])
+    current_owner = OwnerUser.query.filter(OwnerUser.id == owner_id['id']).first()
+    # print(current_owner)
+    if not current_owner:
+        return {"error": "Not authorized to do this action"}, 401
+    else:
+        return current_owner.to_dict()
+    
+
+
+
+
 # region SIGNUP AND LOGIN ROUTES NEED TO ADD AUTH
 @app.post('/signup/user')
 def signup_user():
@@ -41,21 +68,28 @@ def signup_owner():
     return new_owner.to_dict(), 200
 
 
-@app.post('/login')
+@app.post('/login/users')
 def user_login():
     data = request.json
     user = User.query.filter_by(username=data['username']).first()
-    owner = OwnerUser.query.filter_by(username=data['username']).first()
     if user:
         if bcrypt.check_password_hash(user.password, data['password']):
             session['user'] = user.to_dict()
             return user.to_dict(), 200
-    elif owner:
+    else:
+        return {'error': 'Invalid Credentials'}, 401
+
+
+@app.post('/login/owners')
+def owner_login():
+    data = request.json
+    owner = OwnerUser.query.filter_by(username=data['username']).first()
+    if owner:
         if bcrypt.check_password_hash(owner.password, data['password']):
             session['owner'] = owner.to_dict()
             return owner.to_dict(), 200
     else:
-        return {'error': 'Invalid Credentials'}, 401
+        return {"error": 'Invalid Credentials'}, 401
 
 
 @app.post('/logout')
@@ -134,6 +168,7 @@ def get_project(id):
 # region PATCH ROUTES
 @app.patch('/users/<int:id>')
 def update_user(id):
+    authorize_user()
     try:
         data = request.json
         user = User.query.where(User.id == id).update(data)
@@ -146,26 +181,50 @@ def update_user(id):
 
 @app.patch('/owners/<int:id>')
 def update_owner(id):
-    try:
+    current_owner = authorize_owner()
+    if current_owner:
         data = request.json
-        owner = OwnerUser.query.where(OwnerUser.id == id).update(data)
-        db.session.commit()
         owner = OwnerUser.query.get(id)
-        return owner.to_dict()
-    except:
-        return {'error': 'Owner Not Found'}, 404
+        if owner.id == current_owner['id']:
+            for attr in data:
+                setattr(owner, attr, data[attr])
+            # owner = OwnerUser.query.where(OwnerUser.id == id).update(data)
+            db.session.commit()
+            # owner = OwnerUser.query.get(id)
+            return owner.to_dict()
+        else:
+            return {'error': 'Something went wrong'}, 500
 
 
 @app.patch('/projects/<int:id>')
 def update_project(id):
+    current_owner = authorize_owner()
+    print(current_owner)
     try:
         data = request.json
-        project = Projects.query.where(Projects.id == id).update(data)
-        db.session.commit()
         project = Projects.query.get(id)
-        return project.to_dict()
+        print(project)
+        if project.owner_id == current_owner["id"]:
+            project = Projects.query.where(Projects.id == id).update(data)
+            db.session.add(project)
+            db.session.commit()
+            return project.to_dict()
+        else:
+            return {'error': 'Only Project Owners Can Update Projects'}
+
     except:
-        return {'error': 'Project Not Found'}, 404
+            return {'error': 'Project Not Found'}, 404
+
+
+
+    # try:
+    #     data = request.json
+    #     project = Projects.query.where(Projects.id == id).update(data)
+    #     db.session.commit()
+    #     project = Projects.query.get(id)
+    #     return project.to_dict()
+    # except:
+    #     return {'error': 'Project Not Found'}, 404
 # endregion
 
 
@@ -173,9 +232,11 @@ def update_project(id):
 # CREATE NEW PROJECT ROUTE
 @app.post('/projects/create')
 def create_project():
+    current_owner= authorize_owner()
     try:
         data = request.json
-        new_project = Projects(name=data['name'], description=data['description'], location=data['location'], owner_id=session['owner'])
+        new_project = Projects(title=data['title'], description=data['description'], location=data['location'], genre=data['genre'], owner_id=current_owner['id'])
+        print(new_project)
         db.session.add(new_project)
         db.session.commit()
         return new_project.to_dict()
@@ -187,35 +248,40 @@ def create_project():
 # region DELETE ROUTES
 @app.delete('/projects/<int:id>')
 def delete_project(id):
-    try:
-        project = Projects.query.get(id)
+    current_owner = authorize_owner()
+    project = Projects.query.get(id)
+    if project.owner_id == session['owner']['id']:
         print(project)
         db.session.delete(project)
         db.session.commit()
         return {"message": 'Project Deleted'}, 200
-    except:
-        return {"error": 'Project Not Found'}, 404
+    elif project.owner_id != session['owner']['id']:
+        return {"message": 'You must be the owner of this project to delete it'}, 401
+    else:
+        return {"message": 'Project not found'}, 404
 
 @app.delete('/users/<int:id>')
 def delete_user(id):
-    # try:
+    current_user= authorize_user()
     user = User.query.get(id)
-    print(user)
-    db.session.delete(user)
-    db.session.commit()
-    return {'message': 'Your account has been deleted'}
-    # except:
-    #     return {'error': 'User Not Found'}, 404
+    if current_user:
+            db.session.delete(user)
+            db.session.commit()
+            return {'message': 'Your account has been deleted'}
+    else:
+            return {'error': 'User Not Found'}, 404
 
 @app.delete('/owners/<int:id>')
 def delete_owner(id):
-    try:
-        owner = OwnerUser.query.get(id)
-        db.session.delete(owner)
-        db.session.commit()
-        return {'message': 'Your account has been deleted'}
-    except:
-        return {'error': 'Owner Not Found'}, 404
+    current_owner = authorize_owner()
+    if current_owner:
+        try:
+            owner = OwnerUser.query.get(id)
+            db.session.delete(owner)
+            db.session.commit()
+            return {'message': 'Your account has been deleted'}
+        except:
+            return {'error': 'Owner Not Found'}, 404
 
 # endregion
 
