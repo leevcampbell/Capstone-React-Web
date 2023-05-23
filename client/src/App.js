@@ -1,25 +1,53 @@
-import logo from './logo.svg';
+import React from 'react';
+import { useState } from 'react';
+import SignupUser from './SignupUser';
+import SignupOwner from './signupOwner';
+import UserHomepage from './UserHomepage';
+import OwnerLogin from './OwnerLogin';
+import UserLogin from './UserLogin';
+
+
 import './App.css';
+import OwnerHomepage from './OwnerHomepage';
 
 function App() {
+
+  const [currentForm, setCurrentForm] = useState('signupUser');
+  const [currentLogin, setCurrentLogin] = useState('userLogin');
+
+  const toggleLogin = (loginName) => {
+    setCurrentLogin(loginName);
+  }
+
+
+  const toggleForm = (formName) => {
+    setCurrentForm(formName);
+  }
+
+
+
+
+
+
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {
+        currentForm === 'signupUser' ? <SignupUser onFormSwitch={toggleForm}/> : <SignupOwner onFormSwitch={toggleForm}/>
+      }
+      {
+        currentLogin === 'userLogin' ? <UserLogin onLoginSwitch={toggleLogin}/> : <OwnerLogin onLoginSwitch={toggleLogin}/>
+      }
+      
+     
+      
     </div>
-  );
-}
 
+
+  );
+
+
+}
 export default App;
