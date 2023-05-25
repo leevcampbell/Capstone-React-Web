@@ -1,17 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import './CSS/index.css';
+import App from './Components/App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
 import {Routes, Route} from "react-router-dom";
-import SignupUser from './SignupUser';
-import SignupOwner from './signupOwner';
-import UserHomepage from './UserHomepage';
-import OwnerHomepage from './OwnerHomepage';
-import MatchPage from './MatchPage';
-import UserLogin from './UserLogin';
-import OwnerLogin from './OwnerLogin';
+import SignupUser from './Components/SignupUser';
+import SignupOwner from './Components/signupOwner';
+import UserHomepage from './Components/UserHomepage';
+import OwnerHomepage from './Components/OwnerHomepage';
+import MatchPage from './Components/MatchPage';
+import UserLogin from './Components/UserLogin';
+import OwnerLogin from './Components/OwnerLogin';
+import CreateProject from './Components/CreateProject';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -28,6 +29,7 @@ root.render(
       <Route path="/match-page" element={<MatchPage />} />
       <Route path="/login/users" element={<UserLogin />} />
       <Route path="/login/owners" element={<OwnerLogin />} />
+      <Route path="/projects/create" element={<CreateProject />} />
 
 
 
