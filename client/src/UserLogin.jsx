@@ -3,11 +3,16 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 
-function UserLogin(props) {
+
+
+function UserLogin() {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [currentUser, setCurrentUser] = useState('')
+    
+
+
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -21,13 +26,13 @@ function UserLogin(props) {
                     username: username,
                     password: password
                     })
-                }
+                })
                 .then(response => response.json())
                 .then(data => {
-                    setCurrentUser(data);  
+                    console.log(data);  
                 })
                 
-            )}
+            }
         
 
     const handleUsernameChange = (e) => {
@@ -44,17 +49,24 @@ function UserLogin(props) {
 
   return (
     <div>
+
+        
+
         <form onSubmit={handleSubmit}>
             <h1>User Login</h1>
-            <input type="text" placeholder="Username" onChange={handleUsernameChange} />
-            <input type="password" placeholder="Password" onChange={handlePasswordChange} />
+            <input type="text" placeholder="Username" value={username}onChange={handleUsernameChange} />
+            <br></br>
+            <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
+            <br></br>
             <button type="submit">
                 <Link to="/user-homepage">Login</Link>
             </button>
         </form>
 
         <h3>Premium member login</h3>
-        <button onClick={() => props.onLoginSwitch('ownerLogin')}>Owner Login</button>
+        <button>
+            <Link to="/login/owners">Owner Login</Link>
+        </button>
     </div>
     )
 

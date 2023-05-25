@@ -1,0 +1,25 @@
+
+
+.displayed-projects-for-users {
+    display: grid;
+	grid-template-columns:repeat(3, 1fr) ;
+	grid-template-rows: repeat(3, 1fr);
+	grid-gap: 1em;
+}
+
+.project-card{
+    float: left;
+	width: 35em;
+	border-radius: 7em;
+	height: 50em;
+	object-fit: cover;
+	margin: 10px;
+}
+
+.project-image{
+    float: left;
+    width: 35em;
+    height: 35em;
+    object-fit: cover;
+    border-radius: 1em;
+}

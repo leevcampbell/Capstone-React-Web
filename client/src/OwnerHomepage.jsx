@@ -1,8 +1,10 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import LogoutButton from './LogoutButton'
 
 
-function OwnerHomepage({newOwner, ownerUser}) {
+function OwnerHomepage({currentOwner, setCurrentOwner, newOwner, setNewOwner}) {
 
 
     const [ownerData, setOwnerData] = useState([])
@@ -12,9 +14,15 @@ function OwnerHomepage({newOwner, ownerUser}) {
         fetch('/owner-homepage')
         .then(response => response.json())
         .then(data => { 
+            console.log(data)
             setOwnerData(data)
         })
     }, [])
+
+    const handleCollaborate = (e) => {
+        e.preventDefault()
+
+    }
 
 
 
@@ -38,8 +46,15 @@ function OwnerHomepage({newOwner, ownerUser}) {
             <p>Props: {ownerData.props}</p>
             <p>Bio: {ownerData.bio}</p>
             <p>Projects: {ownerData.projects}</p>
-
         </div>
+
+        <button>
+            {/* NEED TO MAKE CREATE PROJECT PAGE AND PUT ROUTE IN INDEX, ALREADY HAVE THIS ROUTE ON THE BACKEND */}
+            <Link to='/match-page'>Host a Project!</Link>
+        </button>
+        <br></br>
+        <br></br>
+        <LogoutButton />
    
 
     </div>

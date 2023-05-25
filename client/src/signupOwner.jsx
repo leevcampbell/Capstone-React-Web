@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 
-function SignupOwner(props) {
+function SignupOwner() {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -61,7 +61,7 @@ function SignupOwner(props) {
 
         
   return (
-    <div>
+    <div className='owner-signup'>
       <h1>Premium Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <h3 className='SUheader'>Name</h3>
@@ -80,16 +80,12 @@ function SignupOwner(props) {
         <h3 className='SUheader'>Location</h3>
           <input type="text" className='SUinput' placeholder='City, State' onChange={handleLocationChange}></input>
           <br></br>
+          <br></br>
           <button type="submit" className='SUbutton'>
             <Link to='/owner-homepage'>Sign Up</Link>
           </button>
       </form>
 
-      <br></br>
-
-      <h3 className='SUheader'>Looking to just help on projects?</h3>
-    
-      <button className='SUbutton' onClick={() => props.onFormSwitch('signupUser')}>Sign Up as a free user!</button>
         
     </div>
   )

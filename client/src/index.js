@@ -9,6 +9,9 @@ import SignupUser from './SignupUser';
 import SignupOwner from './signupOwner';
 import UserHomepage from './UserHomepage';
 import OwnerHomepage from './OwnerHomepage';
+import MatchPage from './MatchPage';
+import UserLogin from './UserLogin';
+import OwnerLogin from './OwnerLogin';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -22,13 +25,17 @@ root.render(
       <Route path="/signup/owner" element={<SignupOwner />} />
       <Route path="/user-homepage" element={<UserHomepage />} />
       <Route path="/owner-homepage" element={<OwnerHomepage />} />
+      <Route path="/match-page" element={<MatchPage />} />
+      <Route path="/login/users" element={<UserLogin />} />
+      <Route path="/login/owners" element={<OwnerLogin />} />
+
 
 
 
 
     </Routes>
   </BrowserRouter>
- 
+
 );
 
 // If you want to start measuring performance in your app, pass a function

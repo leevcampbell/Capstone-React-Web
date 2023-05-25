@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 
-function OwnerLogin(props) {
+function OwnerLogin() {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -22,12 +22,15 @@ function OwnerLogin(props) {
                     password: password
                     })
                 }
+        )
                 .then(response => response.json())
                 .then(data => {
-                    setCurrentOwner(data);  
+                    console.log(data);
+                    setCurrentOwner(data)
                 })
+                }
                 
-            )}
+            
         
 
     const handleUsernameChange = (e) => {
@@ -47,14 +50,18 @@ function OwnerLogin(props) {
         <form onSubmit={handleSubmit}>
             <h1>Premium Login</h1>
             <input type="text" placeholder="Username" onChange={handleUsernameChange} />
+            <br></br>
             <input type="password" placeholder="Password" onChange={handlePasswordChange} />
+            <br></br>
             <button type="submit">
                 <Link to="/owner-homepage">Login</Link>
             </button>
         </form>
 
         <h3>Not a premium member? Login to you free account here</h3>
-        <button onClick={() => props.onLoginSwitch('userLogin')}>User Login</button>
+        <button>
+            <Link to="/login/users">User Login</Link>
+        </button>
     </div>
   )
 
