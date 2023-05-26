@@ -19,7 +19,7 @@ class User(db.Model):
     username = db.Column(db.String, unique=True, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
-    location = db.Column(db.String, nullable=False)
+    location = db.Column(db.String, nullable=True, default='')
     bio = db.Column(db.String, nullable=True, default='')
     image = db.Column(db.String, nullable=True, default='https://static.vecteezy.com/system/resources/previews/008/442/086/original/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg') 
     experience = db.Column(db.Integer)
@@ -27,7 +27,8 @@ class User(db.Model):
     lights = db.Column(db.Boolean, nullable=True, default=False)
     audio = db.Column(db.Boolean, nullable=True, default=False)
     props = db.Column(db.Boolean, nullable=True,default=False)
-    editing_software = db.Column(db.Boolean, nullable=True,default=False)
+    editing = db.Column(db.Boolean, nullable=True,default=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
     matched_projects = db.relationship('MatchedUsers', backref='user', cascade="all, delete", lazy=True)
     projects = association_proxy('matched_users', 'project')
 
@@ -35,7 +36,25 @@ class User(db.Model):
     
 
     def __repr__(self):
-        return f'<User {self.name} {self.username} {self.email} {self.location} {self.experience} {self.bio} {self.experience} camera={self.camera} lights={self.lights}  audio={self.audio} props={self.props} editor={self.editing_software}>'
+        return f'<User {self.name} {self.username} {self.email} {self.location} {self.experience} {self.bio} {self.experience} camera={self.camera} lights={self.lights}  audio={self.audio} props={self.props} editor={self.editing} email={self.email}>'
+
+
+    # def to_dict_matched(self):
+    #     return {
+    #         'id': self.id,
+    #         'name': self.name,
+    #         'username': self.username,
+    #         'location': self.location,
+    #         'bio': self.bio,
+    #         'experience': self.experience,
+    #         'camera': self.camera,
+    #         'lights': self.lights,
+    #         'audio': self.audio,
+    #         'props': self.props,
+    #         'editing_software': self.editing,
+    #         'email': self.email,
+    #         'matched_projects': [user.to_dict() for user in self.matched_projects],
+    #     }
 
 
     def to_dict(self):
@@ -50,7 +69,9 @@ class User(db.Model):
             'lights': self.lights,
             'audio': self.audio,
             'props': self.props,
-            'editing_software': self.editing_software,
+            'editing_software': self.editing,
+            'email': self.email,
+        
         }
 
         @validates('email')
@@ -105,12 +126,25 @@ class Projects(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.id', ondelete="CASCADE"), nullable=False)
     location = db.Column(db.String, nullable=True, default='')
     genre = db.Column(db.String, nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
     image = db.Column(db.String, nullable=True, default='https://static.vecteezy.com/system/resources/previews/005/903/347/original/gold-abstract-letter-s-logo-for-negative-video-recording-film-production-free-vector.jpg')
     matched_users = db.relationship('MatchedUsers', backref='project', passive_deletes=True, lazy=True)
     users = association_proxy('matched_users', 'user')
 
     def __repr__(self):
-        return f'<Projects {self.title} owner= {self.owner_id} {self.description} {self.location} {self.genre} {self.image}>'
+        return f'<Projects {self.title} owner= {self.owner_id} {self.description} {self.location} {self.genre} {self.image} {self.users}>'
+
+    def to_dict_for_user(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'owner_id': self.owner_id,
+            'location': self.location,
+            'genre': self.genre,
+            'image': self.image,
+            # 'users': [user.to_dict() for user in self.users]
+        }
 
     def to_dict(self):
         return {
@@ -155,10 +189,16 @@ class OwnerUser(db.Model):
     bio = db.Column(db.String, nullable=True, default="")
     image = db.Column(db.String, nullable=True, default='https://static.vecteezy.com/system/resources/previews/008/442/086/original/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg')
     experience = db.Column(db.Integer)
+    camera = db.Column(db.String, nullable=True, default='')
+    lights = db.Column(db.String, nullable=True, default='')
+    audio = db.Column(db.String, nullable=True, default='')
+    props = db.Column(db.String, nullable=True, default='')
+    editing = db.Column(db.String, nullable=True, default='')
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
     projects = db.relationship('Projects', backref='owner', cascade="all, delete-orphan", lazy=True)
 
     def __repr__(self):
-        return f'<Owner {self.name} {self.username} {self.email} {self.location} {self.bio} {self.experience}>'
+        return f'<Owner {self.name} {self.username} {self.email} {self.location} {self.bio} {self.experience} email={self.email}>'
 
     def to_dict(self):
         return {
@@ -168,6 +208,12 @@ class OwnerUser(db.Model):
             'location': self.location,
             'bio': self.bio,
             'experience': self.experience,
+            'camera': self.camera,
+            'lights': self.lights,
+            'audio': self.audio,
+            'props': self.props,
+            'editing': self.editing,
+            'email': self.email,
             'projects': [project.to_dict() for project in self.projects]
         }
 
@@ -230,4 +276,15 @@ class MatchedUsers(db.Model):
             'id': self.id,
             'user_id': self.user_id,
             'project_id': self.project_id,
+            'project': self.project.to_dict(),
         }
+
+    def to_dict_users(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'project_id': self.project_id,
+            'users': self.user.to_dict(),
+        }
+
+    

@@ -1,7 +1,8 @@
 from flask import Flask, request, session
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
-from models import db, User, Projects, OwnerUser
+from models import db, User, Projects, OwnerUser, MatchedUsers
+# from flask_cors import CORS
 
 
 app = Flask(__name__)
@@ -15,25 +16,49 @@ migrate = Migrate(app, db)
 
 bcrypt = Bcrypt(app)
 
+# CORS(app)
 
 @app.route('/')
-def index():
-    return 'Hello World'
+def homepage():
+    return {'message': 'Welcome to the backend!'}
 
+
+@app.route('/user-homepage')
+def user_index():
+    authorize_user()
+    current_user = User.query.get(session['user']['id'])
+    # print(session['user'])
+    if current_user:
+        return current_user.to_dict(), 200
+    else:
+        return {'error': 'User must be logged in to continue'}, 401
+
+@app.route('/owner-homepage')
+def owner_index():
+    authorize_owner()
+    current_owner = OwnerUser.query.get(session['user']['id'])
+    if current_owner:
+        return current_owner.to_dict(), 200
+    else:
+        return {'error': 'Owner must be logged in to continue'}, 401
+
+
+# works for: matchpage, 
 def authorize_user():
-    user_id = session['user_id']
-    current_user = User.query.get(user_id)
-    try:
-        if current_user:
+    # # print(session)
+    user_id = session['user']
+    current_user = User.query.filter(User.id == user_id["id"]).first()
+    if current_user:
             return current_user, 200
-    except:
+    else:
         return {'error': 'User must be logged in to continue'}, 401
 
 def authorize_owner():
-    owner_id = session['owner']
+    print(session)
+    owner_id = session['user']
     print(owner_id['id'])
     current_owner = OwnerUser.query.filter(OwnerUser.id == owner_id['id']).first()
-    # print(current_owner)
+    
     if not current_owner:
         return {"error": "Not authorized to do this action"}, 401
     else:
@@ -50,10 +75,11 @@ def signup_user():
     hashed_password = bcrypt.generate_password_hash(
         data['password']).decode('utf-8')
     new_user = User(name=data['name'], username=data['username'], email=data['email'],
-                    password=hashed_password, location=data['location'], experience=data['experience'], bio=data['bio'])
+                    password=hashed_password, location=data['location'])
     db.session.add(new_user)
     db.session.commit()
     session['user'] = new_user.to_dict()
+    # print(session['user'])
     return new_user.to_dict(), 200
 
 
@@ -61,10 +87,11 @@ def signup_user():
 def signup_owner():
     data = request.json
     hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
-    new_owner = OwnerUser(name=data['name'], username=data['username'], email=data['email'], password=hashed_password, location=data['location'], experience=data['experience'], bio=data['bio'])
+    new_owner = OwnerUser(name=data['name'], username=data['username'], email=data['email'], password=hashed_password, location=data['location'])
+    # print(new_owner)
     db.session.add(new_owner)
     db.session.commit()
-    session['owner'] = new_owner.to_dict()
+    session['user'] = new_owner.to_dict()
     return new_owner.to_dict(), 200
 
 
@@ -86,21 +113,23 @@ def owner_login():
     owner = OwnerUser.query.filter_by(username=data['username']).first()
     if owner:
         if bcrypt.check_password_hash(owner.password, data['password']):
-            session['owner'] = owner.to_dict()
+            session['user'] = owner.to_dict()
             return owner.to_dict(), 200
     else:
         return {"error": 'Invalid Credentials'}, 401
 
 
-@app.post('/logout')
+@app.delete('/logout')
 def logout():
     current_user = User.query.get(session['user']['id'])
-    current_owner = OwnerUser.query.get(session['owner']['id'])
+    current_owner = OwnerUser.query.get(session['user']['id'])
     if current_user:
+        print(current_user, session['user'])
         session.pop('user', None)
         return {'message': 'User logged out'}, 200
     elif current_owner:
-        session.pop('owner', None)
+        print(current_owner, session['user'])
+        session.pop('user', None)
         return {'message': 'Owner logged out'}, 200
     else:
         return {'error': 'Must be logged in to logout'}, 500
@@ -136,8 +165,10 @@ def get_owners():
 
 @app.get('/owners/<int:id>')
 def get_owner(id):
+    current_owner=authorize_owner()
     try:
-        owner = OwnerUser.query.get(id)
+        owner = OwnerUser.query.where(current_owner.id == id).first()
+        print(owner)
         return owner.to_dict()
     except:
         return {'error': 'Owner Not Found'}, 404
@@ -166,9 +197,9 @@ def get_project(id):
 
 
 # region PATCH ROUTES
-@app.patch('/users/<int:id>')
+@app.patch('/users/edit/<int:id>')
 def update_user(id):
-    authorize_user()
+    current_user = authorize_user()
     try:
         data = request.json
         user = User.query.where(User.id == id).update(data)
@@ -179,7 +210,7 @@ def update_user(id):
         return {'error': 'User Not Found'}, 404
 
 
-@app.patch('/owners/<int:id>')
+@app.patch('/owners/edit/<int:id>')
 def update_owner(id):
     current_owner = authorize_owner()
     if current_owner:
@@ -199,11 +230,11 @@ def update_owner(id):
 @app.patch('/projects/<int:id>')
 def update_project(id):
     current_owner = authorize_owner()
-    print(current_owner)
+    # print(current_owner)
     try:
         data = request.json
         project = Projects.query.get(id)
-        print(project)
+        # print(project)
         if project.owner_id == current_owner["id"]:
             project = Projects.query.where(Projects.id == id).update(data)
             db.session.add(project)
@@ -214,17 +245,6 @@ def update_project(id):
 
     except:
             return {'error': 'Project Not Found'}, 404
-
-
-
-    # try:
-    #     data = request.json
-    #     project = Projects.query.where(Projects.id == id).update(data)
-    #     db.session.commit()
-    #     project = Projects.query.get(id)
-    #     return project.to_dict()
-    # except:
-    #     return {'error': 'Project Not Found'}, 404
 # endregion
 
 
@@ -235,28 +255,43 @@ def create_project():
     current_owner= authorize_owner()
     try:
         data = request.json
+        print(data)
         new_project = Projects(title=data['title'], description=data['description'], location=data['location'], genre=data['genre'], owner_id=current_owner['id'])
-        print(new_project)
         db.session.add(new_project)
         db.session.commit()
         return new_project.to_dict()
     except:
         return {'error': 'Project Could Not Be Created'}, 404
 
+@app.post('/match-page')
+def like_project():
+    current_user = authorize_user()[0]
+    # print(current_user)
+    try:
+        data = request.json
+        project = Projects.query.get(data['project_id'])
+        match_user = MatchedUsers(user_id=current_user.id, project_id=project.id) 
+        # print(current_user.id)   
+        db.session.add(match_user)
+        db.session.commit()
+        return match_user.to_dict()
+    except:
+        return {'error': 'Project Not Found'}, 404
+
 
 
 # region DELETE ROUTES
-@app.delete('/projects/<int:id>')
+@app.delete('/projects/delete/<int:id>')
 def delete_project(id):
     current_owner = authorize_owner()
     project = Projects.query.get(id)
-    if project.owner_id == session['owner']['id']:
-        print(project)
+    if project.owner_id == session['user']['id']:
+        print(project, session['user'], current_owner)
         db.session.delete(project)
         db.session.commit()
         return {"message": 'Project Deleted'}, 200
-    elif project.owner_id != session['owner']['id']:
-        return {"message": 'You must be the owner of this project to delete it'}, 401
+    elif project.owner_id != session['user']['id']:
+            return {"message": 'You must be the owner of this project to delete it'}, 401
     else:
         return {"message": 'Project not found'}, 404
 
@@ -284,6 +319,35 @@ def delete_owner(id):
             return {'error': 'Owner Not Found'}, 404
 
 # endregion
+
+@app.get('/projects/matches')
+def get_matches():
+    current_user = authorize_user()
+    print(current_user)
+    # try:
+    matches = MatchedUsers.query.filter(MatchedUsers.user_id == current_user[0].id).all()
+    print(matches)
+    return {'matches': [match.to_dict() for match in matches]}
+    # except:
+    #     return {'error': 'Matches Not Found'}, 404
+
+@app.get('/owners/matches')
+def get_owner_matches():
+    current_owner = authorize_owner()
+    print(current_owner)
+    owner_projects= current_owner[0].projects
+    users_on_projects = [project.users for project in owner_projects]
+    flattened_list = [user for sublist in users_on_projects for user in sublist]
+    #list of users 
+
+    # try:
+  
+    # return {'matches': [match.to_dict() for match in matches]}
+    # except:
+    #     return {'error': 'Matches Not Found'}, 404
+
+
+
 
 
 
