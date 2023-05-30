@@ -54,7 +54,6 @@ def authorize_user():
         return {'error': 'User must be logged in to continue'}, 401
 
 def authorize_owner():
-    print(session)
     owner_id = session['user']
     print(owner_id['id'])
     current_owner = OwnerUser.query.filter(OwnerUser.id == owner_id['id']).first()
@@ -335,16 +334,15 @@ def get_matches():
 def get_owner_matches():
     current_owner = authorize_owner()
     print(current_owner)
-    owner_projects= current_owner[0].projects
-    users_on_projects = [project.users for project in owner_projects]
+    owner_projects= current_owner["projects"]
+    print(owner_projects)
+    users_on_projects = [project["users"] for project in owner_projects]
     flattened_list = [user for sublist in users_on_projects for user in sublist]
-    #list of users 
+    return {'matches': flattened_list}
+    
+    
 
-    # try:
-  
-    # return {'matches': [match.to_dict() for match in matches]}
-    # except:
-    #     return {'error': 'Matches Not Found'}, 404
+
 
 
 
