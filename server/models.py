@@ -17,7 +17,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False) 
     username = db.Column(db.String, unique=True, nullable=False)
-    email = db.Column(db.String, unique=True, nullable=False)
+    email = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
     location = db.Column(db.String, nullable=True, default='')
     bio = db.Column(db.String, nullable=True, default='')
@@ -39,22 +39,6 @@ class User(db.Model):
         return f'<User {self.name} {self.username} {self.email} {self.location} {self.experience} {self.bio} {self.experience} camera={self.camera} lights={self.lights}  audio={self.audio} props={self.props} editor={self.editing} email={self.email}>'
 
 
-    # def to_dict_matched(self):
-    #     return {
-    #         'id': self.id,
-    #         'name': self.name,
-    #         'username': self.username,
-    #         'location': self.location,
-    #         'bio': self.bio,
-    #         'experience': self.experience,
-    #         'camera': self.camera,
-    #         'lights': self.lights,
-    #         'audio': self.audio,
-    #         'props': self.props,
-    #         'editing_software': self.editing,
-    #         'email': self.email,
-    #         'matched_projects': [user.to_dict() for user in self.matched_projects],
-    #     }
 
 
     def to_dict(self):
@@ -183,7 +167,7 @@ class OwnerUser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     username = db.Column(db.String, unique=True, nullable=False)
-    email = db.Column(db.String, unique=True, nullable=False)
+    email = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
     location = db.Column(db.String, nullable=False)
     bio = db.Column(db.String, nullable=True, default="")
