@@ -13,6 +13,11 @@ import MatchPage from './Components/MatchPage';
 import UserLogin from './Components/UserLogin';
 import OwnerLogin from './Components/OwnerLogin';
 import CreateProject from './Components/CreateProject';
+import EditOwnerInfo from './Components/EditOwnerInfo';
+import EditUserInfo from './Components/EditUserInfo';
+import UserSeeProjects from './Components/UserSeeProjects';
+import OwnerSeeUsers from './Components/OwnerSeeUsers';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -30,6 +35,12 @@ root.render(
       <Route path="/login/users" element={<UserLogin />} />
       <Route path="/login/owners" element={<OwnerLogin />} />
       <Route path="/projects/create" element={<CreateProject />} />
+      <Route path="/owner/edit" element={<EditOwnerInfo />} />
+      <Route path="/user/edit" element={<EditUserInfo />} />
+      <Route path="/projects/matches" element={<UserSeeProjects />} />
+      <Route path="/owner/collaborate" element={<OwnerSeeUsers />} />
+
+
 
 
 

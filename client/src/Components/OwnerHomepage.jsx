@@ -1,15 +1,21 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import LogoutButton from './LogoutButton'
 import OwnerNavBar from './OwnerNavBar'
+import '../CSS/Homepage.css'
+import '../CSS/ProjectCard.css'
+
+import ownerPic from '../assets/owneruser_profilepic.png'
+
 
 
 function OwnerHomepage({currentOwner, setCurrentOwner, newOwner, setNewOwner}) {
 
+  
+
+
 
     const [ownerData, setOwnerData] = useState({})
-    const [projectData, setProjectData] = useState([])
+    const [projectList, setProjectList] = useState([])
 
 
 
@@ -19,26 +25,21 @@ function OwnerHomepage({currentOwner, setCurrentOwner, newOwner, setNewOwner}) {
         .then(data => { 
             console.log(data)
             setOwnerData(data)
+            setProjectList(data.projects)
         })
     }, [])
 
-    const handleCollaborate = (e) => {
-        e.preventDefault()
 
-    }
-    const handleProjectDelete = () => {
-        const projectId = ownerData.projects[0].id
-        console.log(projectId)
+    const handleProjectDelete = (id) => {
+        console.log(id)
         console.log(ownerData)
-        fetch(`/projects/delete/${projectId}`, {
+        fetch(`/projects/delete/${id}`, {
           method: 'DELETE',
-        }
-        )
-        .then(response => response.json())
-        .then(data => {
-            console.log(data)
-            setProjectData(data)
-        }
+        })
+        .then(          
+          setProjectList(projects => {
+            projects.filter(project => project.id !== id)
+          })
         )
       }
 
@@ -49,7 +50,7 @@ function OwnerHomepage({currentOwner, setCurrentOwner, newOwner, setNewOwner}) {
             <p>{project.description}</p>
             <p>{project.location}</p>
             <p>{project.genre}</p>
-            <button onClick={handleProjectDelete}>Delete Project</button>
+            <button onClick={() => handleProjectDelete(project.id)}>Delete Project</button>
           </div>
         )
       })
@@ -59,27 +60,32 @@ function OwnerHomepage({currentOwner, setCurrentOwner, newOwner, setNewOwner}) {
 
 
   return (
-    <div className="user-profile">
+    <div className="owner-profile">
         <OwnerNavBar />
+
         <div className="profile-card">
             <h2>Welcome, {ownerData.name}</h2>
             <div>
-            <img src={ownerData.image} alt="Profile Pic"/>
-
+            <img className = "profile-image" src={ownerPic} alt="Profile Pic"/>
             </div>
-            <p>{ownerData.username}</p>
-            <p>Location: {ownerData.location}</p>
-            <p>Member since: {ownerData.created_at}</p>
-            <p>Camera Equipment: {ownerData.camera}</p>
-            <p>Editing Software: {ownerData.editing}</p>
-            <p>Light Kit: {ownerData.lights}</p>
-            <p>Audio Equipment: {ownerData.audio}</p>
-            <p>Props: {ownerData.props}</p>
-            <p>Bio: {ownerData.bio}</p>
+            <div className = "info-container">
+              <p>Username: {ownerData.username}</p>
+              <p>Location: {ownerData.location}</p>
+              <p>Contact: {ownerData.email}</p>
+              <p>Experience: {ownerData.experience} </p>
+              <p>Camera Equipment: {ownerData.camera === "1" ? '✅' : '⛔'}</p>
+              <p>Editing Software: {ownerData.editing === "1" ? '✅' : '⛔'}</p>
+              <p>Light Kit: {ownerData.lights === "1" ? '✅' : '⛔'}</p>
+              <p>Audio Equipment: {ownerData.audio === "1" ? '✅' : '⛔'}</p>
+              <p>Props: {ownerData.props === "1" ? '✅' : '⛔'}</p>
+              <p>Bio: {ownerData.bio}</p>
+            </div>
             <p>Projects:</p>
+            <div>
                 <div className='project-card-container'>
                     {mappedProjects}
                 </div>
+            </div>
         </div>
 
       

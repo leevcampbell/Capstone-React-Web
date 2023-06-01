@@ -53,7 +53,7 @@ function MatchPage() {
 
     const mappedProjects = projects.map(project => {
             return(
-            <div className="project-card" key={project.id}> 
+            <div className="project-card-match-page" key={project.id}> 
                 <h2>{project.title}</h2>
                 <img className= 'project-image'src={project.image} alt="Project Pic"/>
                 <p>{project.description}</p>
@@ -72,7 +72,7 @@ function MatchPage() {
   return (
     <div className='project-container'>
         <h1 className='header'>Projects To Collaborate On</h1>
-        <button id='go-back-button' onClick={handleGoBack}>Go Back</button>
+        <button className='go-back-button' onClick={handleGoBack}>Go Back</button>
         <div className='displayed-projects-for-users' >
             {mappedProjects}
         </div>

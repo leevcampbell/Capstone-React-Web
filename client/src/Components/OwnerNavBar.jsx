@@ -13,7 +13,11 @@ function OwnerNavBar() {
       <nav>
         <button onClick={() => navigate('/owner-homepage')}>Homepage</button>
         <button onClick={() => navigate('/projects/create')}>Create Project</button>
+        <button onClick={() => navigate('/owner/edit')}>Edit Your Info</button>
+        <button onClick={() => navigate('/owner/collaborate')}>Your Crews</button>
+
         <LogoutButton />      
+        
       </nav>
         
     </div>

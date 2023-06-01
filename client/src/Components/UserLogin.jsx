@@ -32,7 +32,9 @@ function UserLogin() {
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);  
+                    console.log(data)
+                    setCurrentUser(data); 
+                    navigate('/user-homepage')
                 })
                 
             }
@@ -44,6 +46,10 @@ function UserLogin() {
 
     const handlePasswordChange = (e) => {   
         setPassword(e.target.value)
+    }
+
+    const handleClick = (e) => {
+        navigate('/login/owners')
     }
             
 
@@ -62,13 +68,13 @@ function UserLogin() {
             <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
             <br></br>
             <button type="submit">
-                <Link to="/user-homepage">Login</Link>
+                Login
             </button>
         </form>
 
         <h3>Premium member login</h3>
-        <button>
-            <Link to="/login/owners">Owner Login</Link>
+        <button onClick={handleClick}>
+            Owner Login
         </button>
     </div>
     )

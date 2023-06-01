@@ -1,6 +1,9 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import LogoutButton from './LogoutButton'
+
+import freeUserPic from '../assets/user_profilepic.jpeg'
+import '../CSS/Homepage.css'
+import UserMenu from './UserMenu'
 
 
 function UserHomepage({currentUser, setCurrentUser, newUser, setNewUser}) {
@@ -14,6 +17,7 @@ function UserHomepage({currentUser, setCurrentUser, newUser, setNewUser}) {
         fetch('/user-homepage')
         .then(response => response.json())
         .then(data => { 
+            console.log(data)
             setUserData(data)
         })
     }, [])
@@ -26,21 +30,22 @@ function UserHomepage({currentUser, setCurrentUser, newUser, setNewUser}) {
 
   return (
     <div className="user-profile">
-        <h1>{userData.name} Homepage</h1>
+        <UserMenu />
 
         <div className="profile-card">
             <h2>Welcome, {userData.name}</h2>
             <div className="profile-image">
-                <img src={userData.image} alt="Profile Pic"/>
+                <img src={freeUserPic} alt="Profile Pic"/>
             </div>
-            <div className="profile-details">
-                <p>{userData.username}</p>
+            <div className="info-container-user">
+                <p>Username: {userData.username}</p>
                 <p>Location: {userData.location}</p>
-                <p>Camera Equipment: {userData.camera}</p>
-                <p>Editing Software: {userData.editing}</p>
-                <p>Light Kit: {userData.lights}</p>
-                <p>Audio Equipment: {userData.audio}</p>
-                <p>Props: {userData.props}</p>
+                <p>Contact: {userData.email}</p>
+                <p>Camera Equipment: {userData.camera ? '✅' : '⛔'}</p>
+                <p>Editing Software: {userData.editing ? '✅' : '⛔'}</p>
+                <p>Light Kit: {userData.lights ? '✅' : '⛔'}</p>
+                <p>Audio Equipment: {userData.audio ? '✅' : '⛔'}</p>
+                <p>Props: {userData.props ? '✅' : '⛔'}</p>
                 <p>Bio: {userData.bio}</p>
             </div>
 
@@ -48,11 +53,11 @@ function UserHomepage({currentUser, setCurrentUser, newUser, setNewUser}) {
 
         </div>
 
-        <button>
-            <a href='/match-page'>Find a Project!</a>
-        </button>
-   
-        <LogoutButton />
+       
+       
+
+        
+        
     </div>
   )
 

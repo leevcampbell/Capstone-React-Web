@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 
 function OwnerLogin() {
@@ -8,6 +9,8 @@ function OwnerLogin() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [currentOwner, setCurrentOwner] = useState('')
+
+    const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -27,7 +30,9 @@ function OwnerLogin() {
                 .then(data => {
                     console.log(data);
                     setCurrentOwner(data)
+                    navigate('/owner-homepage')
                 })
+
                 }
                 
             
@@ -39,6 +44,10 @@ function OwnerLogin() {
 
     const handlePasswordChange = (e) => {   
         setPassword(e.target.value)
+    }
+
+    const handleClick = (e) => {
+        navigate('/login/users')
     }
             
 
@@ -54,13 +63,13 @@ function OwnerLogin() {
             <input type="password" placeholder="Password" onChange={handlePasswordChange} />
             <br></br>
             <button type="submit">
-                <Link to="/owner-homepage">Login</Link>
+                Login
             </button>
         </form>
 
         <h3>Not a premium member? Login to you free account here</h3>
-        <button>
-            <Link to="/login/users">User Login</Link>
+        <button onClick={handleClick}>
+            User Login
         </button>
     </div>
   )

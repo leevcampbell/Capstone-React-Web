@@ -93,6 +93,7 @@ function CreateProject() {
           <input type="text" name="projectGenre" placeholder="Project Genre" value={projectGenre} onChange={handleProjectGenreChange}/>
           <br></br>
           <br></br>
+          
           <button type="submit">Create Project
 
           </button>

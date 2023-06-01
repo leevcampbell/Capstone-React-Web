@@ -5,21 +5,23 @@
 	grid-template-columns:repeat(3, 1fr) ;
 	grid-template-rows: repeat(3, 1fr);
 	grid-gap: 1em;
+	flex-wrap: wrap;
+    justify-content: center;
 }
 
-.project-card{
+.project-card-match-page{
     float: left;
 	width: 35em;
 	border-radius: 7em;
-	height: 50em;
+	height: 45em;
 	object-fit: cover;
 	margin: 10px;
 }
 
 .project-image{
-    float: left;
-    width: 35em;
-    height: 35em;
+    float: center;
+    width: 10em;
+    height: 10em;
     object-fit: cover;
     border-radius: 1em;
 }
