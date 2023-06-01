@@ -36,14 +36,10 @@ function OwnerHomepage({currentOwner, setCurrentOwner, newOwner, setNewOwner}) {
         fetch(`/projects/delete/${id}`, {
           method: 'DELETE',
         })
-        .then(          
-          setProjectList(projects => {
-            projects.filter(project => project.id !== id)
-          })
-        )
+        .then(setProjectList(projectList.filter(project => project.id !== id)))
       }
 
-    const mappedProjects = ownerData?.projects?.map(project => {
+    const mappedProjects = projectList.map(project => {
         return(
           <div className="project-card" key={project.id}>
             <h3>{project.title}</h3>
