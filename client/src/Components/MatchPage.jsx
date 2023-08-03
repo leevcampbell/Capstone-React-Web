@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import '../CSS/matchpage.css'
 import UserMenu from './UserMenu'
 
@@ -9,7 +8,7 @@ function MatchPage() {
 
     const [projects, setProjects] = useState([])
 
-    const navigate = useNavigate()
+    
 
     useEffect(() => {
         fetch('/projects')
@@ -21,9 +20,6 @@ function MatchPage() {
         
     }, [])
 
-    const handleGoBack = () => {
-        navigate('/user-homepage')
-    }
 
     const handleLike = (project) => {
         fetch('/match-page', {
