@@ -2,6 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import '../CSS/EditInfo.css'
 import { useNavigate } from 'react-router-dom'
+import UserMenu from './UserMenu'
 
 
 function EdituserInfo() {
@@ -121,6 +122,7 @@ function EdituserInfo() {
   return (
     <div className='edit-info-page'>
         <h3>Edit Your Info</h3>
+        <UserMenu />
         <form className='edit-info-form' onSubmit={handleEditSubmit}>
            
             <h3>Kit Options</h3>

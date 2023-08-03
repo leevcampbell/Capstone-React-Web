@@ -11,6 +11,7 @@ function UserMenu() {
   return (
     <div className='user-menu'>
         <nav>
+            <button onClick={() => navigate('/user-homepage')}>Home</button>
             <button onClick={() => navigate('/user/edit')}>Edit Your Info</button>
             <button onClick={() => navigate('/projects/matches')}>View Projects You Liked</button>
             <button onClick={() => navigate('/match-page')}>Find Projects</button>

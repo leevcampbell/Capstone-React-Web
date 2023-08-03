@@ -2,6 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../CSS/matchpage.css'
+import UserMenu from './UserMenu'
 
 
 function MatchPage() {
@@ -72,7 +73,7 @@ function MatchPage() {
   return (
     <div className='project-container'>
         <h1 className='header'>Projects To Collaborate On</h1>
-        <button className='go-back-button' onClick={handleGoBack}>Go Back</button>
+        <UserMenu />
         <div className='displayed-projects-for-users' >
             {mappedProjects}
         </div>

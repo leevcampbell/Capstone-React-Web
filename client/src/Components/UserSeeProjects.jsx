@@ -1,8 +1,9 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import '../CSS/matchpage.css'
 import '../CSS/ProjectCard.css'
+import UserMenu from './UserMenu'
 
 function UserSeeProjects() {
 
@@ -11,7 +12,7 @@ function UserSeeProjects() {
 
     console.log(currentUser)
 
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     useEffect(() => {
         fetch('/user-homepage')
@@ -45,27 +46,20 @@ function UserSeeProjects() {
         )
     })
 
-    const handleGoBack = () => {
-        navigate('/user-homepage')
-    }
-
-
-
-
-
-
 
 return (
     <div>
         <h1>Projects You Want To Work On</h1>
-        <button className='go-back-button' onClick={handleGoBack}>Go Back</button>
+        <UserMenu />
+
+        
         <div className='project-card-container'>
             {mappedProjects}
         </div>
         
 
     </div>
-  )
+)
 }
 
 export default UserSeeProjects
