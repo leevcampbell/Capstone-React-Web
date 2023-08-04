@@ -1,21 +1,21 @@
 
 
 .displayed-projects-for-users {
-    display: grid;
-	grid-template-columns:repeat(3, 1fr) ;
-	grid-template-rows: repeat(3, 1fr);
-	grid-gap: 1em;
-	flex-wrap: wrap;
+	display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    align-items: flex-start;
+    width: 100vw;
 }
 
 .project-card-match-page{
-    float: left;
-	width: 35em;
-	border-radius: 7em;
-	height: 45em;
-	object-fit: cover;
-	margin: 10px;
+	float: left;
+    width: 17em;
+    border-style: ridge;
+    border-width: 1px;
+    margin: 10px;
+    border-radius: 1em;
+    flex: 1 0 300px;
 }
 
 .project-image{

@@ -3,8 +3,9 @@
     width: 17em;
     border-style: ridge;
     border-width: 1px;
-    margin: 1em;
+    margin: 10px;
     border-radius: 1em;
+    flex: 1 0 300px;
 
 }
 
@@ -12,4 +13,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: flex-start;
+    width: 100vw;
+
 }
