@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-// import { useNavigate } from 'react-router-dom'
 import '../CSS/matchpage.css'
 import '../CSS/ProjectCard.css'
 import UserMenu from './UserMenu'
@@ -9,10 +8,7 @@ function UserSeeProjects() {
 
     const [matchedProjects, setMatchedProjects] = useState([])
     const [currentUser, setCurrentUser] = useState([])
-
     console.log(currentUser)
-
-    // const navigate = useNavigate()
 
     useEffect(() => {
         fetch('/user-homepage')
@@ -56,7 +52,7 @@ function UserSeeProjects() {
 
 return (
     <div>
-        <h1>Projects You Want To Work On</h1>
+        <h1>Your Projects "User"</h1>
         <UserMenu />
 
         

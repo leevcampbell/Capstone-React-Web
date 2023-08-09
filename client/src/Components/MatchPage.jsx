@@ -8,7 +8,6 @@ function MatchPage() {
 
     const [projects, setProjects] = useState([])
 
-    
 
     useEffect(() => {
         fetch('/projects')
@@ -19,7 +18,6 @@ function MatchPage() {
         })
         
     }, [])
-
 
     const handleLike = (project) => {
         fetch('/match-page', {
@@ -45,8 +43,6 @@ function MatchPage() {
                 )
         
     }
-        
-
 
     const mappedProjects = projects.map(project => {
             return(
@@ -63,8 +59,6 @@ function MatchPage() {
             )
         }
         )
-    
-
 
   return (
     <div className='project-container'>

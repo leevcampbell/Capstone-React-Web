@@ -1,10 +1,16 @@
 import React from 'react'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 
 
 function SignupUser(props) {
+  console.log(props)
+
+//  user gets POSTED to database but Info is not being passed to UserHomepage. Uncaught in syntax error not JSON error
+
+  const navigate = useNavigate()
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -36,9 +42,9 @@ function SignupUser(props) {
                 })
                 .then(response => response.json())
                 .then(data => {
-                    setNewUser(data);
-                    
+                    setNewUser(data); 
                 })
+                navigate('/user-homepage')
               } 
   
 
@@ -87,7 +93,7 @@ function SignupUser(props) {
           <input type="text" className='SUinput' placeholder='City, State' onChange={handleLocationChange}></input>
           <br></br>
           <button type="submit" className='SUbutton'>
-            <Link to='/user-homepage'>Sign Up</Link>
+            Sign Up
           </button>
       </form>
 
@@ -96,6 +102,7 @@ function SignupUser(props) {
       <h3 className='SUheader'>Looking to host your project?</h3>
     
       <button className='SUbutton' onClick={() => props.onFormSwitch('signupOwner')}>Sign up for a premium account here!</button>
+      
         
     </div>
   )

@@ -56,7 +56,7 @@ function OwnerHomepage({currentOwner, setCurrentOwner, newOwner, setNewOwner}) {
 
 
   return (
-    <div className="owner-profile">
+    <div className="owner-homepage">
         <OwnerNavBar />
 
         <div className="profile-card">
@@ -76,8 +76,8 @@ function OwnerHomepage({currentOwner, setCurrentOwner, newOwner, setNewOwner}) {
               <p>Props: {ownerData.props === "1" ? '✅' : '⛔'}</p>
               <p>Bio: {ownerData.bio}</p>
             </div>
-            <p>Projects:</p>
             <div>
+            <p>Your Projects:</p>
                 <div className='project-card-container'>
                     {mappedProjects}
                 </div>

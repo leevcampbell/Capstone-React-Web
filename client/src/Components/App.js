@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import '../CSS/App.css';
@@ -10,24 +10,65 @@ function App() {
 
   const navigate = useNavigate();
 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [currentUser, setCurrentUser] = useState('')
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    fetch('/login/users', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setCurrentUser(data); 
+                navigate('/user-homepage')
+            })
+            
+        }
+
+        const handleUsernameChange = (e) => {
+          setUsername(e.target.value)
+      }
+  
+      const handlePasswordChange = (e) => {   
+          setPassword(e.target.value)
+      }
+
   return (
     <div className="App">
+      <header className="App-header">
+        <h1>MrKR</h1>
+        <p>A one-stop shop for Indie and Guerilla Filmmakers</p>
+      </header>
 
-      <h1>MrKR</h1>
-      <p>A one-stop shop for Indie and Guerilla Filmmakers</p>
+      <form onSubmit={handleSubmit}>
+        <h3>User Login</h3>
+            <input type="text" placeholder="Username" value={username}onChange={handleUsernameChange} />
+            <br></br>
+            <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
+            <br></br>
+            <button type="submit">
+                Login
+            </button>
+      </form>
 
-      <h3>Basic User Login</h3>
-      <button onClick={()=> navigate('/login/users')}>Sign in</button>
+      <button onClick={()=> navigate('/login/owners')}>Premium User Login</button>
 
-      <h3>Premium User Login</h3>
-      <button onClick={()=> navigate('/login/owners')}>Sign in</button>
+      <button onClick={()=> navigate('/signup/user')}>Sign Up for a free account here</button>
 
-      <h3>Sign up for a Premium Account here to host a project!</h3>
+      <button onClick={()=> navigate('/signup/owner')}> Sign Up for a premium account here</button>
+      
 
-      <button onClick={()=> navigate('/signup/owner')}> Premium User Sign Up</button>
-
-      <h3> Sign up for a free Account here!</h3>
-      <button onClick={()=> navigate('/signup/user')}>Free User Sign Up</button>
 
     
       

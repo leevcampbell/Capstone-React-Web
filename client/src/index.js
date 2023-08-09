@@ -10,7 +10,7 @@ import SignupOwner from './Components/signupOwner';
 import UserHomepage from './Components/UserHomepage';
 import OwnerHomepage from './Components/OwnerHomepage';
 import MatchPage from './Components/MatchPage';
-import UserLogin from './Components/UserLogin';
+// import UserLogin from './Components/UserLogin';
 import OwnerLogin from './Components/OwnerLogin';
 import CreateProject from './Components/CreateProject';
 import EditOwnerInfo from './Components/EditOwnerInfo';
@@ -32,7 +32,7 @@ root.render(
       <Route path="/user-homepage" element={<UserHomepage />} />
       <Route path="/owner-homepage" element={<OwnerHomepage />} />
       <Route path="/match-page" element={<MatchPage />} />
-      <Route path="/login/users" element={<UserLogin />} />
+      {/* <Route path="/login/users" element={<UserLogin />} /> */}
       <Route path="/login/owners" element={<OwnerLogin />} />
       <Route path="/projects/create" element={<CreateProject />} />
       <Route path="/owner/edit" element={<EditOwnerInfo />} />
