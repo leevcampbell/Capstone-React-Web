@@ -112,7 +112,7 @@ class Projects(db.Model):
     genre = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     image = db.Column(db.String, nullable=True, default='https://static.vecteezy.com/system/resources/previews/005/903/347/original/gold-abstract-letter-s-logo-for-negative-video-recording-film-production-free-vector.jpg')
-    matched_users = db.relationship('MatchedUsers', backref='project', passive_deletes=True, lazy=True)
+    matched_users = db.relationship('MatchedUsers', backref='project', cascade="all, delete-orphan", passive_deletes=True, lazy=True)
     users = association_proxy('matched_users', 'user')
 
     def __repr__(self):

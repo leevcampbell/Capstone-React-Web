@@ -45,7 +45,7 @@ def owner_index():
 
 # works for: matchpage, 
 def authorize_user():
-    # # print(session)
+    # print(session)
     user_id = session['user']
     current_user = User.query.filter(User.id == user_id["id"]).first()
     if current_user:
@@ -319,16 +319,17 @@ def delete_owner(id):
 
 # endregion
 
+#
 @app.get('/projects/matches')
 def get_matches():
     current_user = authorize_user()
     print(current_user)
-    # try:
-    matches = MatchedUsers.query.filter(MatchedUsers.user_id == current_user[0].id).all()
-    print(matches)
-    return {'matches': [match.to_dict() for match in matches]}
-    # except:
-    #     return {'error': 'Matches Not Found'}, 404
+    try:
+        matches = MatchedUsers.query.filter(MatchedUsers.user_id == current_user[0].id).all()
+        print(matches)
+        return {'matches': [match.to_dict() for match in matches]}
+    except:
+        return {'error': 'Matches Not Found'}, 404
 
 @app.get('/owners/matches')
 def get_owner_matches():
