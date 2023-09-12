@@ -1,6 +1,7 @@
 import React from 'react'
 import OwnerNavBar from './OwnerNavBar'
 import '../CSS/SeeUsers.css'
+import '../CSS/neontext.css'
 
 import { useState, useEffect } from 'react'
 
@@ -46,7 +47,7 @@ function OwnerSeeUsers() {
   return (
     <div>
         <OwnerNavBar />
-        <h1>Your Crews</h1>
+        <h1 className='neonText'>Your Crews</h1>
         <div className="user-card-container">
             {mappedUsers}
         </div>

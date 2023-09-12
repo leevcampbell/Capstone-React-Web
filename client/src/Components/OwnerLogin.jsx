@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import '../CSS/neontext.css'
 
 
 function OwnerLogin() {
@@ -56,7 +57,7 @@ function OwnerLogin() {
   return (
     <div>
         <form onSubmit={handleSubmit}>
-            <h1>Premium Login</h1>
+            <h1 className='neonText'>Premium Login</h1>
             <input type="text" placeholder="Username" onChange={handleUsernameChange} />
             <br></br>
             <input type="password" placeholder="Password" onChange={handlePasswordChange} />
@@ -66,7 +67,7 @@ function OwnerLogin() {
             </button>
         </form>
 
-        <h3>Not a premium member? Login to you free account here</h3>
+        <h3 className='neonText'>Not a premium member? Login to you free account here</h3>
         <button onClick={handleClick}>
             User Login
         </button>

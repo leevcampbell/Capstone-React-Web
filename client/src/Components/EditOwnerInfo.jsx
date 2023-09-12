@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import '../CSS/EditInfo.css'
 import { useNavigate } from 'react-router-dom'
 import OwnerNavBar from './OwnerNavBar'
+import '../CSS/neontext.css'
 
 
 function EditOwnerInfo() {
@@ -120,29 +121,29 @@ function EditOwnerInfo() {
   return (
     <div className='edit-info-page'>
         <OwnerNavBar />
-        <h3>Edit Your Info</h3>
+        <h3 className='neonText'>Edit Your Info</h3>
         <form className='edit-info-form' onSubmit={handleEditSubmit}>
-            <h3>Kit Options</h3>
+            <h3 className='neonText'>Kit Options</h3>
             <div className='kit-option-checkbox'>
-                <p>Camera Equipment</p>
+                <p className='neonText'>Camera Equipment</p>
                 <input type='checkbox'  onChange={toggleCamera} placeholder='Camera Equipment' />
                 <br></br>
-                <p>Lighting Equipment</p>
+                <p className='neonText'>Lighting Equipment</p>
                 <input type='checkbox'  onChange={() => setownerLights(!ownerLights)} placeholder='Lighting Equipment' />
                 <br></br>
-                <p>Audio Equipment</p>
+                <p className='neonText'>Audio Equipment</p>
                 <input type='checkbox'  onChange={() => setownerAudio(!ownerAudio)} placeholder='Audio Equipment' />
-                <p>Editing Software</p>
+                <p className='neonText'>Editing Software</p>
                 <input type='checkbox' onChange={() => setownerEditing(!ownerEditing)} placeholder='Editing Software' />
                 <br></br>
-                <p>Props</p>
+                <p className='neonText'>Props</p>
                 <input type='checkbox'  onChange={() => setownerProps(!ownerProps)} placeholder='Props' />
             </div>
-            <h3>Location</h3>
+            <h3 className='neonText'>Location</h3>
             <input type='text' value={ownerLocation} onChange={handleLocation} placeholder='Location' />
-            <h3>Experience</h3>
+            <h3 className='neonText'>Experience</h3>
             <input type='integer' placeholder='Experience' value={ownerExperience} onChange={handleExperience}/>   
-            <h3>Bio</h3>
+            <h3 className='neonText'>Bio</h3>
             <textarea name='bio' placeholder='Describe yourself' rows="4" cols="50" value={ownerBio} onChange={handleBio}></textarea>
             <br></br>
             <button type='submit'>Submit</button>

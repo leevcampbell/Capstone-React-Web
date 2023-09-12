@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import '../CSS/neontext.css'
+import '../CSS/buttons.css'
 
 
 
@@ -61,17 +63,17 @@ function UserLogin() {
         
 
         <form onSubmit={handleSubmit}>
-            <h1>User Login</h1>
+            <h1 className='neonText'>User Login</h1>
             <input type="text" placeholder="Username" value={username}onChange={handleUsernameChange} />
             <br></br>
             <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
             <br></br>
-            <button type="submit">
+            <button className = 'buttonDesign' type="submit">
                 Login
             </button>
         </form>
 
-        <h3>Premium member login</h3>
+        <h3 className='neonText'>Premium member login</h3>
         <button onClick={handleClick}>
             Owner Login
         </button>

@@ -2,7 +2,9 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import '../CSS/matchpage.css'
 import UserMenu from './UserMenu'
+import '../CSS/neontext.css'
 
+// CHANGED H1 TAG CLASS FOR NEON FLICKER EFFECT
 
 function MatchPage() {
 
@@ -60,9 +62,11 @@ function MatchPage() {
         }
         )
 
+
+
   return (
     <div className='project-container'>
-        <h1 className='header'>Projects To Collaborate On</h1>
+        <h1 className='neonText'>Projects To Collaborate On</h1>
         <UserMenu />
         <div className='displayed-projects-for-users' >
             {mappedProjects}

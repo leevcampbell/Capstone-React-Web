@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../CSS/neontext.css'
+import '../CSS/buttons.css'
 
 import '../CSS/App.css';
 
@@ -47,17 +49,17 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>MrKR</h1>
-        <p>A one-stop shop for Indie and Guerilla Filmmakers</p>
+        <h1 className='neonText'>MrKR</h1>
+        <p className='neonText'>A one-stop shop for Indie and Guerilla Filmmakers</p>
       </header>
 
       <form onSubmit={handleSubmit}>
-        <h3>User Login</h3>
+        <h3 className='neonText'>User Login</h3>
             <input type="text" placeholder="Username" value={username}onChange={handleUsernameChange} />
             <br></br>
             <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
             <br></br>
-            <button type="submit">
+            <button classname= 'button-design' type="submit">
                 Login
             </button>
       </form>

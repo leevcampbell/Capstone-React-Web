@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import '../CSS/EditInfo.css'
 import { useNavigate } from 'react-router-dom'
 import UserMenu from './UserMenu'
+import '../CSS/neontext.css'
 
 
 function EdituserInfo() {
@@ -15,15 +16,12 @@ function EdituserInfo() {
     const [userEditing, setUserEditing] = useState(false)
     const [userProps, setUserProps] = useState(false)
     const [userBio, setUserBio] = useState('')
-   
     const [userLocation, setUserLocation] = useState('')
     const [userExperience, setUserExperience] = useState('')
-
     const [editedUser, setEditedUser] = useState({})
-   
+
 
     const navigate = useNavigate()
-
 
     useEffect(() => {
         fetch('/user-homepage')
@@ -34,15 +32,9 @@ function EdituserInfo() {
     }, []
     )
 
-
-
-    
-
     const handleBio = (e) => {
         setUserBio(e.target.value)
     }
-
-
 
     const handleLocation = (e) => {
         setUserLocation(e.target.value)
@@ -51,11 +43,6 @@ function EdituserInfo() {
     const handleExperience = (e) => {
         setUserExperience(e.target.value)
     }
-
-   
-
-
- 
 
     const handleEditSubmit = (e) => {
         e.preventDefault()
@@ -114,39 +101,34 @@ function EdituserInfo() {
         console.log(userProps)
     }
 
-
-
-
-
-
   return (
     <div className='edit-info-page'>
-        <h3>Edit Your Info</h3>
+        <h3 className='neonText'>Edit Your Info</h3>
         <UserMenu />
         <form className='edit-info-form' onSubmit={handleEditSubmit}>
            
-            <h3>Kit Options</h3>
+            <h3 className='neonText'>Kit Options</h3>
             <div className='kit-option-checkbox'>
-                <p>Camera Equipment</p>
+                <p className='neonText'>Camera Equipment</p>
                 <input type='checkbox'  onChange={toggleCamera} placeholder='Camera Equipment' />
                 
                 <br></br>
-                <p>Lighting Equipment</p>
+                <p className='neonText'>Lighting Equipment</p>
                 <input type='checkbox'  onChange={toggleLights} placeholder='Lighting Equipment' />
                 <br></br>
-                <p>Audio Equipment</p>
+                <p className='neonText'>Audio Equipment</p>
                 <input type='checkbox'  onChange={toggleAudio} placeholder='Audio Equipment' />
-                <p>Editing Software</p>
+                <p className='neonText'>Editing Software</p>
                 <input type='checkbox' onChange={toggleEditing} placeholder='Editing Software' />
                 <br></br>
-                <p>Props</p>
+                <p className='neonText'>Props</p>
                 <input type='checkbox'  onChange={toggleProps} placeholder='Props' />
             </div>
-            <h3>Location</h3>
+            <h3 className='neonText'>Location</h3>
             <input type='text' value={userLocation} onChange={handleLocation} placeholder='Location' />
-            <h3>Experience</h3>
+            <h3 className='neonText'>Experience</h3>
             <input type='integer' placeholder='Experience' value={userExperience} onChange={handleExperience}/>   
-            <h3>Bio</h3>
+            <h3 className='neonText'>Bio</h3>
             <textarea name='bio' placeholder='Describe yourself' rows="4" cols="50" value={userBio} onChange={handleBio}></textarea>
             <br></br>
             <button type='submit'>Submit</button>

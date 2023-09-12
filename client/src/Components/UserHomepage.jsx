@@ -33,7 +33,7 @@ function UserHomepage({currentUser, setCurrentUser, newUser, setNewUser}) {
         <UserMenu />
 
         <div className="profile-card">
-            <h2>Welcome, {userData.name}</h2>
+            <h2 className='neonText'>Welcome, {userData.name}</h2>
             <div className="profile-image">
                 <img src={freeUserPic} alt="Profile Pic"/>
             </div>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import '../CSS/neontext.css'
 
 
 function SignupOwner() {
@@ -62,22 +63,22 @@ function SignupOwner() {
         
   return (
     <div className='owner-signup'>
-      <h1>Premium Sign Up</h1>
+      <h1 className='neonText'>Premium Sign Up</h1>
       <form onSubmit={handleSubmit}>
-        <h3 className='SUheader'>Name</h3>
+        <h3 className='neonText'>Name</h3>
           <input value= {name} type="text" className='SUinput' placeholder='Your Full Name' onChange={handleNameChange}></input>
           <br></br>
-        <h3 className='SUheader'>Username</h3>
+        <h3 className='neonText'>Username</h3>
           <input type="text" className='SUinput' placeholder='Username' onChange={handleUsernameChange}></input>
           <br></br>
-        <h3 className='SUheader'>Email</h3>
+        <h3 className='neonText'>Email</h3>
           <input type="email" className='SUinput' placeholder='youremail@example.com' value={email} onChange={handleEmailChange}></input>
-        <h3 className='SUheader'>Password</h3>
+        <h3 className='neonText'>Password</h3>
 
           <input type="password" className='SUinput' placeholder='*************' value={password} onChange={handlePasswordChange}></input>
           <br></br>
 
-        <h3 className='SUheader'>Location</h3>
+        <h3 className='neonText'>Location</h3>
           <input type="text" className='SUinput' placeholder='City, State' onChange={handleLocationChange}></input>
           <br></br>
           <br></br>

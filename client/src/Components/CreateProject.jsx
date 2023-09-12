@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import OwnerNavBar from './OwnerNavBar'
+import '../CSS/neontext.css'
 
 function CreateProject() {
 
@@ -67,7 +68,7 @@ function CreateProject() {
   return (
     <div className='create-project-form'>
       <OwnerNavBar />
-      <h1>Create a Project</h1>
+      <h1 className='neonText'>Create a Project</h1>
       <form value={projectData} onSubmit={handleSubmit}>
           <label>Project Name</label>
           <br></br>

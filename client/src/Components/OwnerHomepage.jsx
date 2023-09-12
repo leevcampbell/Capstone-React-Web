@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import OwnerNavBar from './OwnerNavBar'
 import '../CSS/Homepage.css'
 import '../CSS/ProjectCard.css'
+import '../CSS/neontext.css'
 
 import ownerPic from '../assets/owneruser_profilepic.png'
 
@@ -60,7 +61,7 @@ function OwnerHomepage({currentOwner, setCurrentOwner, newOwner, setNewOwner}) {
         <OwnerNavBar />
 
         <div className="profile-card">
-            <h2>Welcome, {ownerData.name}</h2>
+            <h2 className='neonText'>Welcome, {ownerData.name}</h2>
             <div>
             <img className = "profile-image" src={ownerPic} alt="Profile Pic"/>
             </div>
@@ -76,13 +77,19 @@ function OwnerHomepage({currentOwner, setCurrentOwner, newOwner, setNewOwner}) {
               <p>Props: {ownerData.props === "1" ? '✅' : '⛔'}</p>
               <p>Bio: {ownerData.bio}</p>
             </div>
-            <div>
+            {/* <div className='project-display'>
             <p>Your Projects:</p>
                 <div className='project-card-container'>
                     {mappedProjects}
                 </div>
-            </div>
+            </div> */}
         </div>
+        <div className='project-display'>
+            <p className='neonText'>Your Projects:</p>
+                <div className='project-card-container'>
+                    {mappedProjects}
+                </div>
+            </div>
 
       
 
